@@ -1,10 +1,10 @@
 <?php
 
-function connect() {
+  function connect() {
     $conn = new PDO(
         'mysql:host=localhost;dbname=tweets',
-        'mateusz',
-        'biszk0pt'
+        'username',
+        'password'
     );
 
     $conn->setAttribute(
@@ -13,12 +13,12 @@ function connect() {
     );
 
     return $conn;
-}
+  }
 
-# Connect to the DB
-$conn = connect();
+  # Connect to the DB
+  $conn = connect();
 
-class Tweet {
+  class Tweet {
     public $body;
     public $pubDate;
 
@@ -41,38 +41,38 @@ class Tweet {
     {
         $this->pubdate = $date->format('Y/m/d H:i:s');
     }
-}
+  }
 
-$sql = "INSERT INTO `tweet` (body) VALUES (:body)";
-$stmt = $conn->prepare($sql);
-$stmt->bindParam(":body", $body);
+  $sql = "INSERT INTO `raindrop` (body) VALUES (:body)";
+  $stmt = $conn->prepare($sql);
+  $stmt->bindParam(":body", $body);
 
-$form = $_POST;
-$body = $form[ 'body' ];
+  $form = $_POST;
+  $body = $form[ 'body' ];
 
-$result = $stmt->execute();
+  $result = $stmt->execute();
 
-function fetchTweets($conn) {
-    $stmt = $conn->query('SELECT * FROM tweet');
+  function fetchTweets($conn) {
+    $stmt = $conn->query('SELECT * FROM raindrop');
 
     return $stmt->fetchAll(PDO::FETCH_OBJ);
-}
+  }
 
-$tweets = [];
+  $tweets = [];
 
-$tweets = fetchTweets($conn);
+  $tweets = fetchTweets($conn);
 
-foreach($tweets as $tweet) {
+  foreach($tweets as $tweet) {
     echo "<h2>{$tweet->body}</h2>";
     echo "<p>{$tweet->pubdate}</p>";
-}
+  }
 
-if($result) {
+  if($result) {
     echo "Your text has been posted";
 
-    }// end if
-else {
+  }// end if
+  else {
     echo '0 results';
-    }// end else
+  }// end else
 
 ?>
